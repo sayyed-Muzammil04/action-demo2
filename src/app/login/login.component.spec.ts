@@ -21,7 +21,7 @@ describe('LoginComponent', () => {
   });
 
   it('should create the component', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeFalsy();
   });
 
   it('should create the component',()=>{
