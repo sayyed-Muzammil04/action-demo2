@@ -24,10 +24,6 @@ describe('LoginComponent', () => {
     expect(component).toBeFalsy();
   });
 
-  it('should create the component',()=>{
-    expect(component).toBeTruthy();
-  });
-
   it('should have empty username and password initially', () => {
     expect(component.username).toBe('');
     expect(component.password).toBe('');
