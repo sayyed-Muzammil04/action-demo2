@@ -18,7 +18,7 @@ export class LoginComponent {
 
   login(): void {
     if (this.username === 'admin' && this.password === 'password') {
-      // Login successful
+      // Login successfulllllll
       this.errorMessage = '';
       // Redirect or perform any other actions
     } else {
