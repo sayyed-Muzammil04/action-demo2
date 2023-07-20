@@ -35,11 +35,12 @@ jobs:
           path: test-results/
 
       - name: Deploy GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.0
+        uses: peaceiris/actions-gh-pages@v3
         if: success()  # Deploy only when the build is successful
         with:
-          branch: gh-pages  # Specify the branch you want to deploy to (e.g., gh-pages)
-          folder: test-results  # The folder you want to deploy as the GitHub Pages site
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./test-results  # The folder you want to deploy as the GitHub Pages site
+          cname: sayyed-muzammil04.github.io  # Replace this with your custom domain if you have one
 
       - name: Display GitHub Pages Link
         if: success()  # Optionally, display the link only on successful deployment
