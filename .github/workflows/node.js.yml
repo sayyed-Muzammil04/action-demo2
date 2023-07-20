@@ -1,4 +1,4 @@
-name: Node.js CI and Deploy to GitHub Pages
+name: Demo
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
     strategy:
       matrix:
@@ -34,15 +34,24 @@ jobs:
           name: karma_testReports
           path: test-results/
 
+  deploy:
+    needs: build
+    runs-on: windows-latest
+    if: success()  # Deploy only when the build is successful
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Prepare Deployment Files
+        run: |
+          mkdir deploy
+          cp -R test-results deploy/
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: success()  # Deploy only when the build is successful
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./test-results  # The folder you want to deploy as the GitHub Pages site
+          publish_dir: ./deploy  # The folder you want to deploy as the GitHub Pages site
 
       - name: Display GitHub Pages Link
-        if: always()  # Optionally, display the link regardless of deployment success
         run: |
           echo "GitHub Pages link:"
           echo "https://sayyed-muzammil04.github.io/Demo/"
