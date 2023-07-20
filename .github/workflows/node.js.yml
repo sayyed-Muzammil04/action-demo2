@@ -28,3 +28,27 @@ jobs:
         cache: 'npm'
     - run: npm install -f
     - run: npm test -- --watch=false --browsers=ChromeHeadless
+    
+    - name: Archive test reports
+      uses: actions/upload-artifact@v3
+      if: success() || failure()
+      with:
+        name: karma_testReports
+        path: test-results/
+
+    - name: Deploy GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      if: success() || failure()
+      with:
+        branch: main  
+        folder: test-results  
+       
+    - name: Display GitHub Pages Link
+      if: success() || failure()
+      run: |
+        echo "GitHub Pages link:"
+        echo "https://sayyed-muzammil04.github.io/Demo/"
+       
+    - name: Finalize
+      if: always()
+      run: echo "Artifacts generated and uploaded"
