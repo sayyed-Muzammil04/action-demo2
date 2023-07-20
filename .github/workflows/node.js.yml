@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       matrix:
@@ -36,7 +36,7 @@ jobs:
           path: test-results/
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build  # This indicates that the deployment job depends on the 'build' job
 
     steps:
