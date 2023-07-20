@@ -1,4 +1,4 @@
-name: Node.js CI and Deploy to GitHub Pages
+name: Node.js CI
 
 on:
   push:
@@ -7,12 +7,13 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build-and-deploy:
-    runs-on: windows-latest
+  build:
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       - uses: actions/checkout@v3
@@ -34,16 +35,23 @@ jobs:
           name: karma_testReports
           path: test-results/
 
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # This indicates that the deployment job depends on the 'build' job
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Deploy GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: success()  # Deploy only when the build is successful
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        if: always()  # This ensures the deployment runs even if the 'build' job fails
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./test-results  # The folder you want to deploy as the GitHub Pages site
-          cname: sayyed-muzammil04.github.io  # Replace this with your custom domain if you have one
+          branch: gh-pages  # Customize this to the branch you want to deploy to (e.g., gh-pages)
+          folder: test-results  # Adjust this to the folder containing your site's assets to be deployed
 
       - name: Display GitHub Pages Link
-        if: success()  # Optionally, display the link only on successful deployment
+        if: always()  # This ensures the link is displayed even if the 'build' job fails
         run: |
           echo "GitHub Pages link:"
           echo "https://sayyed-muzammil04.github.io/Demo/"
